@@ -1,17 +1,88 @@
 package com.practicar.gpstimer.gpstimer;
 
-import android.support.v7.app.ActionBarActivity;
+import android.app.ActionBar;
+import android.app.FragmentTransaction;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends FragmentActivity {
+
+    ActionBar actionBar;
+    ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        init();
+    }
+
+    private void init() {
+        actionBar = getActionBar();
+        viewPager = (ViewPager) findViewById(R.id.pager);
+
+        // Create a OnPageChangeListener that is called when the user changes pages
+        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                // probably ignore this event
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                // When swiping between pages, select the corresponding tab
+                actionBar.setSelectedNavigationItem(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                // probably ignore this event
+            }
+        });
+
+        // Set ViewPager with a custom Adapter
+        viewPager.setAdapter(new MyAdapter(getSupportFragmentManager()));
+
+        // Specify that tabs should be displayed in the action bar
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+
+        // Create a tab listener that is called when the user changes tabs
+        ActionBar.TabListener tabListener = new ActionBar.TabListener() {
+            @Override
+            public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
+                // When the tab is selected, switch to the corresponding page in the ViewPager
+                viewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
+                // hide the given tab
+            }
+
+            @Override
+            public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
+                // probably ignore this event
+            }
+        };
+
+        // Create Timer Tab + set Listener
+        ActionBar.Tab tabTimer = actionBar.newTab();
+        tabTimer.setText("Timer");
+        tabTimer.setTabListener(tabListener);
+
+        // Create GMap Tab + set Listener
+        ActionBar.Tab tabGMap = actionBar.newTab();
+        tabGMap.setText("GMap");
+        tabGMap.setTabListener(tabListener);
+
+        // Add tabs to ActionBar
+        actionBar.addTab(tabTimer);
+        actionBar.addTab(tabGMap);
     }
 
 
