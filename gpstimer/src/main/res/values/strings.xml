@@ -7,5 +7,6 @@
     <string name="timer_fragment">Timer</string>
     <string name="gmap_fragment">GMap</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="btnStart">Start</string>
 
 </resources>
