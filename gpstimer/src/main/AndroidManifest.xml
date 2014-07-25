@@ -18,6 +18,28 @@
         </activity>
         <receiver android:name="com.practicar.gpstimer.gpstimer.AlarmReceiver">
         </receiver>
+
+        <!-- Google Maps Android API v2 -->
+        <!-- Google Maps API key -->
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyBnBCtvUDP8k1B6aTcoghp1ZhnPfpbH5fY"/>
+        <!-- Google Play services version -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <!-- Permissions required -->
+        <uses-permission android:name="android.permission.INTERNET"/>
+        <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+        <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+        <!-- Permissions recommended. -->
+        <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+        <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+        <!-- Requirement for OpenGL ES version 2 -->
+        <uses-feature
+            android:glEsVersion="0x00020000"
+            android:required="true"/>
+
     </application>
 
 </manifest>
