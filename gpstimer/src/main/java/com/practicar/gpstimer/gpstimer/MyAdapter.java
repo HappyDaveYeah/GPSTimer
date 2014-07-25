@@ -2,12 +2,12 @@ package com.practicar.gpstimer.gpstimer;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentPagerAdapter;
 
 /**
  * Created by HappyDave on 23/07/2014.
  */
-public class MyAdapter extends FragmentStatePagerAdapter {
+public class MyAdapter extends FragmentPagerAdapter {
 
     public MyAdapter(FragmentManager fm) {
         super(fm);
