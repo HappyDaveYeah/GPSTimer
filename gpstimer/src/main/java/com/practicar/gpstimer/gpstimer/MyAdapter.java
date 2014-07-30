@@ -17,10 +17,10 @@ public class MyAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         Fragment fragment;
         if(position == 0) {
-            fragment = new Timer();
+            fragment = new TimerFragment();
         }
         else {
-            fragment = new GMap();
+            fragment = new GMapFragment();
         }
         return fragment;
     }

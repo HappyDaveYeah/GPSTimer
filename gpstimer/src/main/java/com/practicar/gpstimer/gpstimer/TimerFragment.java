@@ -12,14 +12,14 @@ import android.widget.Button;
 import android.widget.Toast;
 
 
-public class Timer extends Fragment {
+public class TimerFragment extends Fragment {
     Button btnStart;
-    AlarmReceiver alarmReceiver;
+    AlarmBroadcastReceiver alarmBroadcastReceiver;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        alarmReceiver = new AlarmReceiver();
+        alarmBroadcastReceiver = new AlarmBroadcastReceiver();
     }
 
     @Override
@@ -36,8 +36,8 @@ public class Timer extends Fragment {
             @Override
             public void onClick(View view) {
                 Context context = getActivity().getApplicationContext();
-                if(alarmReceiver != null){
-                    alarmReceiver.setTimer(context);
+                if(alarmBroadcastReceiver != null){
+                    alarmBroadcastReceiver.setTimer(context);
                 }else{
                     Toast.makeText(context, "Alarm is null", Toast.LENGTH_SHORT).show();
                 }

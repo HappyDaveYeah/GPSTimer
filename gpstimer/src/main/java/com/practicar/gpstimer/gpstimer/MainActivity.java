@@ -75,7 +75,7 @@ public class MainActivity extends FragmentActivity {
         tabTimer.setText("Timer");
         tabTimer.setTabListener(tabListener);
 
-        // Create GMap Tab + set Listener
+        // Create GMapFragment Tab + set Listener
         ActionBar.Tab tabGMap = actionBar.newTab();
         tabGMap.setText("GMap");
         tabGMap.setTabListener(tabListener);
