@@ -35,9 +35,10 @@ public class TimerFragment extends Fragment {
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                int delayTime = 3000;
                 Context context = getActivity().getApplicationContext();
                 if(alarmBroadcastReceiver != null){
-                    alarmBroadcastReceiver.setTimer(context);
+                    alarmBroadcastReceiver.setTimer(context, delayTime);
                 }else{
                     Toast.makeText(context, "Alarm is null", Toast.LENGTH_SHORT).show();
                 }
