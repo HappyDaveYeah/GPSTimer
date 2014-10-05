@@ -1,19 +1,27 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.practicar.gpstimer.gpstimer.Timer">
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/timer_fragment" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/btnStart"
         android:id="@+id/btnStart"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 
-</FrameLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/timer_fragment"
+        android:id="@+id/time_tv"
+        android:textSize="42dp"
+        android:layout_gravity="center_horizontal|top"
+        android:layout_above="@+id/btnStart"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="70dp" />
+
+</RelativeLayout>

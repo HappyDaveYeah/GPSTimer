@@ -12,8 +12,8 @@ import android.view.MenuItem;
 
 public class MainActivity extends FragmentActivity {
 
-    ActionBar actionBar;
-    ViewPager viewPager;
+    private ActionBar actionBar;
+    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
