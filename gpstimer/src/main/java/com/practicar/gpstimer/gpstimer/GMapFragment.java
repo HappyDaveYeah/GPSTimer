@@ -28,7 +28,7 @@ public class GMapFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_gmap, container, false);
 
-        GoogleMap map = ((SupportMapFragment) getFragmentManager()
+        map = ((SupportMapFragment) getFragmentManager()
                 .findFragmentById(R.id.map)).getMap();
 
         LatLng sydney = new LatLng(-33.867, 151.206);

@@ -2,7 +2,11 @@ package com.practicar.gpstimer.gpstimer;
 
 
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -18,14 +22,19 @@ import android.widget.Toast;
 
 public class TimerFragment extends Fragment implements SharedPreferences.OnSharedPreferenceChangeListener {
     private Button btnStart;
+    private TextView counterTV;
+    private TextView coordTV;
     private TextView timeTV;
     private SharedPreferences pref;
-    private AlarmBroadcastReceiver alarmBroadcastReceiver;
+    private int delayTime;
+    private static final int PERIOD = 1000;
+    private static final int FACTOR_MS = 1000;
+    private static final String ACTION = "com.practicar.gpstimer.gpstimer.AlarmBroadcastReceiver";
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        alarmBroadcastReceiver = new AlarmBroadcastReceiver();
     }
 
     @Override
@@ -37,33 +46,56 @@ public class TimerFragment extends Fragment implements SharedPreferences.OnShare
     }
 
     private void init(View view) {
+        counterTV = (TextView) view.findViewById(R.id.counter_tv);
+        coordTV = (TextView) view.findViewById(R.id.coord_tv);
         timeTV = (TextView) view.findViewById(R.id.time_tv);
         btnStart = (Button) view.findViewById(R.id.btnStart);
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Context context = getActivity().getApplicationContext();
-                int delayTime = Integer.parseInt(pref.getString(SettingsActivity.KEY_PREF_DELAY, "")) * 1000;
-                if(alarmBroadcastReceiver != null){
-                    alarmBroadcastReceiver.setTimer(context, delayTime);
-                }else{
-                    Toast.makeText(context, "Alarm is null", Toast.LENGTH_SHORT).show();
-                }
+                setTimer();
             }
         });
     }
 
+    private BroadcastReceiver alarmBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            delayTime = delayTime - PERIOD;
+            counterTV.setText(String.valueOf(delayTime / FACTOR_MS));
+            if (delayTime > 0) sendAlarm();
+            else {
+                //TODO: getCoord + Hora Actual
+                Toast.makeText(context, "Time is finished!", Toast.LENGTH_LONG).show();
+            }
+        }
+    };
+
+    public void setTimer() {
+        delayTime = Integer.parseInt(pref.getString(SettingsActivity.KEY_PREF_DELAY, "")) * FACTOR_MS;
+        sendAlarm();
+    }
+
+    private void sendAlarm() {
+        Context context = getActivity().getApplicationContext();
+        AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(ACTION);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + PERIOD, pendingIntent);
+    }
+
     @Override
     public void onResume() {
-        getActivity().registerReceiver(this.alarmBroadcastReceiver, new IntentFilter(AlarmBroadcastReceiver.ACTION));
+        getActivity().registerReceiver(this.alarmBroadcastReceiver, new IntentFilter(ACTION));
         pref = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
         pref.registerOnSharedPreferenceChangeListener(this);
-        changeTimeTextView();
+        changeTimeToPref();
         super.onResume();
     }
 
     @Override
     public void onPause() {
+        getActivity().unregisterReceiver(this.alarmBroadcastReceiver);
         pref = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
         pref.unregisterOnSharedPreferenceChangeListener(this);
         super.onPause();
@@ -72,11 +104,11 @@ public class TimerFragment extends Fragment implements SharedPreferences.OnShare
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if(key.equals(SettingsActivity.KEY_PREF_DELAY)) {
-            changeTimeTextView();
+            changeTimeToPref();
         }
     }
 
-    private void changeTimeTextView() {
-        timeTV.setText(pref.getString(SettingsActivity.KEY_PREF_DELAY, ""));
+    private void changeTimeToPref() {
+        counterTV.setText(pref.getString(SettingsActivity.KEY_PREF_DELAY, ""));
     }
 }
