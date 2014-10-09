@@ -20,7 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-public class TimerFragment extends Fragment implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class TimerFragment extends Fragment {
     private Button btnStart;
     private TextView counterTV;
     private TextView coordTV;
@@ -35,6 +35,7 @@ public class TimerFragment extends Fragment implements SharedPreferences.OnShare
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        pref = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
     }
 
     @Override
@@ -87,8 +88,6 @@ public class TimerFragment extends Fragment implements SharedPreferences.OnShare
     @Override
     public void onResume() {
         getActivity().registerReceiver(this.alarmBroadcastReceiver, new IntentFilter(ACTION));
-        pref = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
-        pref.registerOnSharedPreferenceChangeListener(this);
         changeTimeToPref();
         super.onResume();
     }
@@ -96,16 +95,7 @@ public class TimerFragment extends Fragment implements SharedPreferences.OnShare
     @Override
     public void onPause() {
         getActivity().unregisterReceiver(this.alarmBroadcastReceiver);
-        pref = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
-        pref.unregisterOnSharedPreferenceChangeListener(this);
         super.onPause();
-    }
-
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if(key.equals(SettingsActivity.KEY_PREF_DELAY)) {
-            changeTimeToPref();
-        }
     }
 
     private void changeTimeToPref() {
